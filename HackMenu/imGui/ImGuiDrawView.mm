@@ -82,7 +82,8 @@ static bool MenDeal = true;
 
 
 #pragma mark - 互动
-//该函数的作用是将 iOS 触摸事件转换为 ImGui 输入，以便您可以在 ImGui 中处理触摸事件。在该函数中，我们首先获取了触摸事件中的任何一个触摸点，并将其位置转换为 ImGui 中的坐标系，以便 ImGui 可以正确处理。
+//What this function does is convert iOS touch events into ImGui input so that you can handle touch events in ImGui. 
+//In this function, we first obtain any touch point in the touch event and convert its position to the coordinate system in ImGui so that ImGui can handle it correctly.
 - (void)updateIOWithTouchEvent:(UIEvent *)event
 {
     UITouch *anyTouch = event.allTouches.anyObject;
@@ -126,7 +127,7 @@ static bool MenDeal = true;
 }
 
 #pragma mark - MTKViewDelegate
-//声明默认开关和 状态
+//Declare default switches and states
 static bool 射线 = false;
 static bool 方框 = false;
 static bool 技能 = false;
@@ -151,10 +152,9 @@ ImVec4 射线颜色 = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); // 初始颜色为红色
     id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
     
     if (MenDeal == true) {
-        //菜单显示时 交互为YES可点击
+        //When the menu is displayed, the interaction is YES and can be clicked.
         [self.view setUserInteractionEnabled:YES];
     } else{
-        //菜单显示时 交互为NO 不可可点击
         [self.view setUserInteractionEnabled:NO];
     }
     
@@ -175,19 +175,19 @@ ImVec4 射线颜色 = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); // 初始颜色为红色
         
         ImGui::SetNextWindowPos(ImVec2(x, y), ImGuiCond_FirstUseEver);
         ImGui::SetNextWindowSize(ImVec2(360, 320), ImGuiCond_FirstUseEver);
-        //判断 MenDeal=true 既显示菜单
+        //MenDeal is global state for display and draw main imgui window
         if (MenDeal == true){
             
-            ImGui::Begin("十三哥测试使用", &MenDeal);
+            ImGui::Begin("ImGui on iOS", &MenDeal);
             
-            //选项卡例子=============
-            ImGui::BeginTabBar("MyTabBar"); // 开始一个选项卡栏
+            //Tab example=============
+            ImGui::BeginTabBar("MyTabBar");
             
             ImGui::TableNextColumn();
-            if (ImGui::BeginTabItem("常用功能")) // 开始第一个选项卡
+            if (ImGui::BeginTabItem("Common")) 
             {
                 // 在这里添加第一个选项卡的内容
-                ImGui::Checkbox("血条", &血条);
+                ImGui::Checkbox("hp bar", &血条);
                 ImGui::EndTabItem(); // 结束第一个选项卡
             }
             ImGui::TableNextColumn();
@@ -204,11 +204,11 @@ ImVec4 射线颜色 = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); // 初始颜色为红色
             if (ImGui::CollapsingHeader("一个二级菜单"))
             {
                 //初始化一个
-                if (ImGui::BeginTable("备注：二级菜单功能 3列 既又多个功能会按3列排列", 2))
+                if (ImGui::BeginTable("This table has 3 columns", 2))
                 {
                     ImGui::TableNextColumn();
                     ImGui::Checkbox("人物射线", &射线);
-                    //颜色选择例子
+                    //color selection
                     ImGui::TableNextColumn();
                     ImGui::ColorEdit4("颜色", (float*) &射线颜色);
                     
@@ -221,33 +221,33 @@ ImVec4 射线颜色 = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); // 初始颜色为红色
                 
             }
             
-            //单独的按钮例子===========
+            //single button examples===========
             ImGui::Checkbox("透视总开关", &透视总开关);
             
-            //单独的开关例子====
+    //single button examples===========
             ImGui::Checkbox("My Switch", &透视总开关);
             
-            //单独的滑条例子====
+            //slider int
             
             ImGui::SliderInt("滑条1", &滑条值, 0, 300);
             
             //文字例子=====
-            ImGui::Text("QQ:350722326 %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             
             //颜色选择例子
             
-            ImGui::ColorEdit4("射线颜色", (float*) &射线颜色);
+            ImGui::ColorEdit4("Ray Color", (float*) &射线颜色);
             //结束菜单
             ImGui::End();
             
         }
         ImDrawList* draw_list = ImGui::GetForegroundDrawList();
         
-        //射线
+        //add line to player
         if (射线) {
             draw_list->AddLine(ImVec2(kWidth/2, 30), ImVec2(300, 300), ImColor(射线颜色));
         }
-        //方框
+        //add bounding box
         if (方框) {
             draw_list->AddRectFilled(ImVec2(100, 100), ImVec2(50, 20), 0xffffffff);
         }
