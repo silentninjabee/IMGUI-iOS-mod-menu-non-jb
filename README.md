@@ -1,5 +1,5 @@
 A non jailbreak implementation of dear IMGUI in Objective-C for iOS 13+. 
-Made for building tweak natively in X-Code. 
+Made for building tweak natively in X-Code with MonkeyDEV. 
 Features:
 - ImGUI V 1.83 
 - Gesture-based multi fingered tap to show and hide the imgui mod menu.
